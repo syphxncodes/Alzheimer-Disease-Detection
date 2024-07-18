@@ -22,7 +22,7 @@ class DataIngestion:
     def initiate_data_ingestion(self):
         logging.info("Entered the data ingestion method")
         try:
-            df=pd.read_csv('data and eda\\data\\alzheimers_disease_data.csv')
+            df=pd.read_csv("data_and_eda/data/alzheimers_disease_data.csv")
             df.drop('PatientID',axis=1)
             df.drop('DoctorInCharge',axis=1)
             logging.info('Read the dataset as dataframe')

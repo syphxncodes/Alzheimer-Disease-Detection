@@ -20,6 +20,14 @@ from utils import save_object,evaluate_models
 from exception import CustomException
 import os
 import sys
+import tensorflow
+from tensorflow.keras.models import Sequential
+from keras.regularizers import l2
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import LeakyReLU,PReLU,ELU,ReLU
+from tensorflow.keras.layers import Dropout
+from keras.callbacks import EarlyStopping, ReduceLROnPlateau
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix
 @dataclass
 class ModelTrainerConfig:
     trained_model_file_path=os.path.join("artifacts","model.pkl")
@@ -31,39 +39,43 @@ class ModelTrainer:
     def initiate_model_trainer(self,train_array,test_array):
         try:
             logging.info("Splitting training and test input data.")
+            print("train_array is:",train_array)
+            print("test_array is:",test_array)
             xtrain,ytrain,xtest,ytest=(
                 train_array[:,:-1],
                 train_array[:,-1],
                 test_array[:,:-1],
                 test_array[:,-1]
             )
-            models={
-                #"LinearRegression":LinearRegression(),
-                #"Lasso":Lasso(),
-                #"Ridge":Ridge(),
-                "KNN":KNeighborsClassifier(),
-                "DT":DecisionTreeClassifier(),
-                "RF":RandomForestClassifier(),
-                #"XGB":XGBRegressor(),
-                "Adaboost":AdaBoostClassifier(),
-                #"Catboost":CatBoostRegressor()
-            }
-            model_report:dict=evaluate_models(xtrain=xtrain,ytrain=ytrain,xtest=xtest,ytest=ytest,models=models)
-            best_model_score=max(sorted(model_report.values()))
+            print("x train is:",xtrain)
+            print("y train is:",ytrain)
+            print("x test is:",xtest)
+            print("y test is",ytest)
+            classifier=Sequential()
+            classifier.add(Dense(units=6,activation='relu'))
+            classifier.add(Dense(units=12,activation='relu'))
+            classifier.add(Dense(units=6,activation='relu'))
+            classifier.add(Dense(units=12,activation='relu'))
+            classifier.add(Dense(units=6,activation='relu'))
+            classifier.add(Dense(1,activation='sigmoid'))
+            classifier.compile(optimizer='adam',loss='binary_crossentropy',metrics=['accuracy']) #adam uses a learning rate of 0.01
+            #early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
+            reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=1, min_lr=0.0001)
 
-            best_model_name=list(model_report.keys())[
-                list(model_report.values()).index(best_model_score)
-            ]
-            best_model=models[best_model_name]
-            logging.info(f"Best found model on both training and testing dataset")
+            model_history=classifier.fit(xtrain,ytrain,validation_split=0.33,batch_size=10,epochs=360,callbacks=[reduce_lr])
+            logging.info(f"Found the model.")
             save_object(
                 file_path=self.model_trainer_config.trained_model_file_path,
-                obj=best_model 
+                obj=classifier
             )
-            predicted=best_model.predict(xtest)
-            r2_square=r2_score(ytest,predicted)
+
+            predicted3=classifier.predict(xtest)
+            predicted_classes = (predicted3 > 0.5).astype("int32")
+            accuracy = accuracy_score(ytest, predicted_classes)
         except Exception as e:
             raise CustomException(e,sys)
-        return r2_square
-    
+        
+
+        return accuracy
+        
     
