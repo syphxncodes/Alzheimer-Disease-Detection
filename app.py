@@ -1,7 +1,7 @@
 from flask import Flask,request,render_template
 import numpy as np
 import pandas as pd
-from pipeline.predict_pipeline import CustomData,PredictPipeline
+from pipeline.Predict_pipeline import CustomData,PredictPipeline
 from sklearn.preprocessing import StandardScaler
 application=Flask(__name__) #Gives us the entry point
 app=application
@@ -54,7 +54,11 @@ def predict_datapoint():
         print(pred_df)
         predict_pipeline=PredictPipeline()
         results=predict_pipeline.predict(pred_df)
-        return render_template('home.html',results=results[0])
+        if results>0.5:
+            result_message="There is a risk of Alzheimer's"
+        else:
+            result_message="There is no risk of Alzheimer's"
+        return render_template('home.html',results=result_message)
     
 if __name__=="__main__":
     app.run(host="0.0.0.0",debug=True)

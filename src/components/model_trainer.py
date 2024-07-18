@@ -59,7 +59,7 @@ class ModelTrainer:
             classifier.add(Dense(units=6,activation='relu'))
             classifier.add(Dense(1,activation='sigmoid'))
             classifier.compile(optimizer='adam',loss='binary_crossentropy',metrics=['accuracy']) #adam uses a learning rate of 0.01
-            #early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
+            
             reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=1, min_lr=0.0001)
 
             model_history=classifier.fit(xtrain,ytrain,validation_split=0.33,batch_size=10,epochs=360,callbacks=[reduce_lr])
