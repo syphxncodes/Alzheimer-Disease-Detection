@@ -55,4 +55,28 @@ Change the directory of your command prompt to the cloned repo
   ```bash
     cd Alzheimer-Disease-Detection
 ```
+Create a virtual enviroment for this to run.
+```bash
+python -m venv venv
+```
+* On Windows:
+ ```bash
+  venv\Scripts\activate
+```
+* On macOS/Linux:
+ ```bash
+  source venv/bin/activate
+```
+Install Dependencies
 
+```bash
+pip install -r requirements.txt
+```
+Run
+
+```bash
+python app.py
+```
+Then, go to any web browser and paste: http://127.0.0.1:5000/predictdata
+
+There you go! Just type in your values, and hopefully ur patient is Alzheimer Safe! Thank You for visiting!!
