@@ -43,9 +43,16 @@ Hi all! This is a alzheimer disease detection application, and this comprises of
 * Diagnosis: Diagnosis status for Alzheimer's Disease, where 0 indicates There is no risk and 1 indicates There is a risk.
 
 Using this data, the model predicts diagnosis and gives the information whether the patient is at the risk of having an alzheimer's disease or not. 
-# Data Analysis and Model Training
-In Data Analysis, it was found that there are no null values present in the dataset. 2 of the columns(PatientID,DoctorInCharge) have been deleted from the dataset because it does not serve any purpose for predicting the diagnosis. Using box plots, it was understood that there are no outliers in the dataset, and there were no object type columns to convert. 
+# Data Analysis
+In Data Analysis, it was found that there are no null values present in the dataset. 2 of the columns(PatientID,DoctorInCharge) have been deleted from the dataset because it does not serve any purpose for predicting the diagnosis. Using box plots, it was understood that **there are no outliers** in the dataset, and there were  no object type columns to convert. 
+
+
 By understanding the data, it was found that patients with no head injury and with cardiovascular disease were at a higher risk of getting Alzheimer's. 
+All this code is in the EDA part of the data_and_eda folder.
+# Model Training
+
+I found out that a **deep learning sequential model with 6 layers (5 input layers, and 1 output layer)**,using **adam optimizer,accuracy as the metrics, and activation function as relu**, was the best model for this particular use-case. A significant amount of trials were done before reaching to this stage, some of them being increasing the number of input layers to 10 or more, and changing optimizers and activation functions, but then the best accuracy was with this particular deep learning model.
+
 # Using the code
 First, prerequisites to download this particular application:
 - [Git](https://git-scm.com/downloads) installed on your machine.
