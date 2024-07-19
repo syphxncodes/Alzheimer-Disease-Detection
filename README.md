@@ -43,7 +43,9 @@ Hi all! This is a alzheimer disease detection application, and this comprises of
 * Diagnosis: Diagnosis status for Alzheimer's Disease, where 0 indicates There is no risk and 1 indicates There is a risk.
 
 Using this data, the model predicts diagnosis and gives the information whether the patient is at the risk of having an alzheimer's disease or not. 
-
+# Data Analysis and Model Training
+In Data Analysis, it was found that there are no null values present in the dataset. 2 of the columns(PatientID,DoctorInCharge) have been deleted from the dataset because it does not serve any purpose for predicting the diagnosis. Using box plots, it was understood that there are no outliers in the dataset, and there were no object type columns to convert. 
+By understanding the data, it was found that patients with no head injury and with cardiovascular disease were at a higher risk of getting Alzheimer's. 
 # Using the code
 First, prerequisites to download this particular application:
 - [Git](https://git-scm.com/downloads) installed on your machine.
